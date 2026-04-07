@@ -7,3 +7,6 @@
 - Simon_Guillot : Simon GUILLOT
 - lucas07300-hub : Lucas VAN DE WALLE
 
+## Liens :
+- SonarCloud : https://sonarcloud.io/project/overview?id=6lexx_sharePortfolio
+- Kanban : https://github.com/users/6lexx/projects/3/views/1
