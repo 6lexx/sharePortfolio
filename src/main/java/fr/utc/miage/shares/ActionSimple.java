@@ -30,16 +30,28 @@ public class ActionSimple extends Action {
     // attribut lien
     private final Map<Jour, Float> mapCours;
 
+    private Company company;
+
     // constructeur
-    public ActionSimple(final String libelle) {
+    public ActionSimple(final String libelle, Company company) {
         // Action simple initialisée comme 1 action
         super(libelle);
+        this.company = company;
         // init spécifique
         this.mapCours = new HashMap<>();
     }
 
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     // enrg possible si pas de cours pour ce jour
-    public void enrgCours(final Jour j, final float v) {
+    public void saveDailyPrice(final Jour j, final float v) {
         if (!this.mapCours.containsKey(j)) {
             this.mapCours.put(j, v);
         }
