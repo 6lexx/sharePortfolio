@@ -26,7 +26,7 @@ public class Portfolio {
     }
 
 
-    void buyActionSimple(ActionSimple action, int quantity){
+    public void buyActionSimple(ActionSimple action, int quantity){
         if(quantity <= 0) {
             throw new IllegalArgumentException("Erreur - Il est impossible d'acheter 0 actions");
         }
@@ -34,6 +34,20 @@ public class Portfolio {
             this.lignes.put(action, quantity + this.lignes.get(action));
         } else {
             this.lignes.put(action, quantity);
+        }
+    }
+
+    public void sellActionSimple(ActionSimple action, int quantity){
+        if(quantity <= 0) {
+            throw new IllegalArgumentException("Erreur - Il est impossible de vendre 0 actions");
+        }
+        if(this.lignes.containsKey(action)){
+            if (quantity > this.lignes.get(action)) {
+                throw new IllegalArgumentException("Erreur - Il est impossible de vendre plus actions que vous n'en possèdez");
+            }
+            this.lignes.put(action, this.lignes.get(action) - quantity);
+        } else {
+            throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
         }
     }
 
