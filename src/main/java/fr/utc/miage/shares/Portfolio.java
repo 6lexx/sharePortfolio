@@ -57,4 +57,35 @@ public class Portfolio {
         }
     }
 
+    /**
+     * Permet d'acheter un/plusieurs ETF en l'ajoutant à son portefeuille
+     */
+    public void buyETF(ExchangeTradedFund etf, int quantity){
+        if(quantity <= 0){
+            throw new IllegalArgumentException("Erreur - Il est impossible d'acheter 0 actions");
+        }
+        if(this.lignes.containsKey(etf)){
+            this.lignes.put(etf, this.lignes.get(etf) + quantity);
+        } else {
+            this.lignes.put(etf, quantity);
+        }
+    }
+
+    /**
+     * Permet de vendre un/plusieurs ETF et de les retirer de son portefeuille
+     */
+    public void sellETF(ExchangeTradedFund etf, int quantity){
+        if(quantity <= 0) {
+            throw new IllegalArgumentException("Erreur - Il est impossible de vendre 0 actions");
+        }
+        if(this.lignes.containsKey(etf)){
+            if(quantity > this.lignes.get(etf)){
+                throw new IllegalArgumentException("Erreur - Il est impossible de vendre plus actions que vous n'en possèdez");
+            }
+            this.lignes.put(etf, this.lignes.get(etf) - quantity);
+        } else {
+            throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
+        }
+    }
+
 }
