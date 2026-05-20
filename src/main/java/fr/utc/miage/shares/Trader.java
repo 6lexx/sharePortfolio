@@ -72,29 +72,13 @@ public class Trader {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Trader)) return false;
+
         Trader other = (Trader) obj;
-        if (nom == null) {
-            if (other.nom != null)
-                return false;
-        } else if (!nom.equals(other.nom))
-            return false;
-        if (prenom == null) {
-            if (other.prenom != null)
-                return false;
-        } else if (!prenom.equals(other.prenom))
-            return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        return true;
+        return java.util.Objects.equals(nom, other.nom)
+                && java.util.Objects.equals(prenom, other.prenom)
+                && java.util.Objects.equals(email, other.email);
     }
 
     @Override
