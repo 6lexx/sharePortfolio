@@ -24,4 +24,17 @@ public class Portfolio {
     public Map<Action, Integer> getLignes() {
         return lignes;
     }
+
+
+    void buyActionSimple(ActionSimple action, int quantity){
+        if(quantity <= 0) {
+            throw new IllegalArgumentException("Erreur - Il est impossible d'acheter 0 actions");
+        }
+        if(this.lignes.containsKey(action)){
+            this.lignes.put(action, quantity + this.lignes.get(action));
+        } else {
+            this.lignes.put(action, quantity);
+        }
+    }
+
 }
