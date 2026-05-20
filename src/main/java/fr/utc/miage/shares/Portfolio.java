@@ -26,6 +26,9 @@ public class Portfolio {
     }
 
 
+    /**
+     * Permet d'acheter une/plusieurs action(s) simple(s) en l'ajoutant à son portefeuille
+     */
     public void buyActionSimple(ActionSimple action, int quantity){
         if(quantity <= 0) {
             throw new IllegalArgumentException("Erreur - Il est impossible d'acheter 0 actions");
@@ -37,6 +40,9 @@ public class Portfolio {
         }
     }
 
+    /**
+     * Permet de vendre une/plusieurs action(s) simple(s) et de les retirer de son portefeuille
+     */
     public void sellActionSimple(ActionSimple action, int quantity){
         if(quantity <= 0) {
             throw new IllegalArgumentException("Erreur - Il est impossible de vendre 0 actions");
