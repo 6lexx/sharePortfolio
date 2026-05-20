@@ -16,7 +16,7 @@
 package fr.utc.miage.shares;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class CompanyTest {
@@ -25,7 +25,7 @@ public class CompanyTest {
 
     @Test
     void testConstructorEmpty() {
-        assertDoesNotThrow(() -> new CompanyTest());
+        assertDoesNotThrow(CompanyTest::new);
     }
 
     @Test
@@ -42,13 +42,13 @@ public class CompanyTest {
     void testGetName() {
         var company = new Company(VALID_NAME);
         var name = company.getName();
-        assertTrue(name.equals(VALID_NAME));
+        assertEquals(VALID_NAME, name);
     }
 
     @Test
     void testGetNameInvalid() {
         var company = new Company(INVALID_NAME);
         var name = company.getName();
-        assertTrue(name == INVALID_NAME);
+        assertEquals(INVALID_NAME, name);
     }
 }

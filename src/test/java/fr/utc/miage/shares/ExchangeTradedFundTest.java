@@ -18,7 +18,7 @@ package fr.utc.miage.shares;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class ExchangeTradedFundTest {
@@ -27,7 +27,7 @@ public class ExchangeTradedFundTest {
 
     @Test
     void testConstructorEmpty() {
-        assertAll(() -> new ExchangeTradedFundTest());
+        assertAll(ExchangeTradedFundTest::new);
     }
 
     @Test
@@ -38,12 +38,12 @@ public class ExchangeTradedFundTest {
     @Test
     void testValeur() {
         var etf = new ExchangeTradedFund("Vanguard", REPARTITION);
-        assertTrue(etf.valeur(new Jour(2026, 20)) == 0);
+        assertEquals(0, etf.valeur(new Jour(2026, 20)));
     }
 
     @Test
     void testValeurInvalidDay(){
         var etf = new ExchangeTradedFund("Vanguard", REPARTITION);
-        assertTrue(etf.valeur(null) == 0);
+        assertEquals(0, etf.valeur(null));
     }
 }

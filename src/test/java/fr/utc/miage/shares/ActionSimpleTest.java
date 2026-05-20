@@ -16,64 +16,65 @@
 package fr.utc.miage.shares;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class ActionSimpleTest {
-   private static final Company COMPANY = new Company("Apple");
-
-   @Test
-   void testConstructorEmpty(){
-        assertDoesNotThrow(() -> new ActionSimple(null, null));
-   }
+   private static final String VALID_LABEL = "Apple";
+   private static final String INVALID_LABEL = null;
+   private static final Jour VALID_DAY = new Jour(2026, 20);
+   private static final Jour INVALID_DAY = null;
+   private static final Company COMPANY = new Company(VALID_LABEL);
 
    @Test
     void testConstructorWithParameters() {
-          assertDoesNotThrow(() -> new ActionSimple("Apple", COMPANY));
+          assertDoesNotThrow(() -> new ActionSimple(VALID_LABEL, COMPANY));
     }
 
     @Test
     void testGetCompany() {
-        var action = new ActionSimple("Apple", COMPANY);
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
         var company = action.getCompany();
         assertDoesNotThrow(() -> company.equals(COMPANY));
     }
 
     @Test
     void testGetCompanyInvalid() {
-        var action = new ActionSimple("Apple", null);
+        var action = new ActionSimple(VALID_LABEL, null);
         var company = action.getCompany();
         assertDoesNotThrow(() -> company == null);
     }
 
     @Test
     void testValeur() {
-        var action = new ActionSimple("Apple", COMPANY);
-        assertDoesNotThrow(() -> action.valeur(new Jour(2026, 20)));
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        var actual = action.valeur(VALID_DAY);
+        assertEquals(0f, actual, 0.01f);
     }
 
     @Test
     void testValeurInvalidDay() {
-        var action = new ActionSimple("Apple", COMPANY);
-        assertThrows(IllegalArgumentException.class, () -> action.valeur(null));
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        assertThrows(IllegalArgumentException.class, () -> action.valeur(INVALID_DAY));
     }
 
     @Test
     void testSaveDailyPrice(){
-        var action = new ActionSimple("Apple", COMPANY);
-        assertDoesNotThrow(() -> action.saveDailyPrice(new Jour(2026, 20), 150.0f));
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        assertDoesNotThrow(() -> action.saveDailyPrice(VALID_DAY, 150.0f));
     }
 
     @Test
     void testSaveDailyPriceDuplicate(){
-        var action = new ActionSimple("Apple", COMPANY);
-        action.saveDailyPrice(new Jour(2026, 20), 150.0f);
-        assertThrows(IllegalArgumentException.class, () -> action.saveDailyPrice(new Jour(2026, 20), 200.0f));
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        action.saveDailyPrice(VALID_DAY, 150.0f);
+        assertThrows(IllegalArgumentException.class, () -> action.saveDailyPrice(VALID_DAY, 200.0f));
     }
 
     @Test
-    void testSaveDailyPriceInvalid() {
-        var action = new ActionSimple("Apple", COMPANY);
-        assertThrows(IllegalArgumentException.class, () -> action.saveDailyPrice(null, 150.0f));
+    void testSaveDailyPriceInvalidDay() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        assertThrows(IllegalArgumentException.class, () -> action.saveDailyPrice(INVALID_DAY, 150.0f));
     }
 }

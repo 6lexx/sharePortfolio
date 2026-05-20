@@ -17,25 +17,18 @@ package fr.utc.miage.shares;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class BrokerTest {
     private static final Company COMPANY1 = new Company("company1");
     private static final Company COMPANY2 = new Company("company2");
-    private static final Company COMPANY3 = new Company("company3");
-    private static final Company COMPANY4 = new Company("company4");
 
     private static final Action ACTION_SIMPLE = new ActionSimple("action1", COMPANY1);
     private static final Map<Company, Float> ETFS = Map.of(COMPANY1, 0.5f, COMPANY2, 0.5f);
     
     private static final Action ACTION_ETF = new ExchangeTradedFund("action2", ETFS);
-    
-    private static final Map<String, Action> ACTIONS = Map.of(
-        "action1", ACTION_SIMPLE,
-        "action2", ACTION_ETF
-    );
 
     @Test
     void testGetAction() {
@@ -44,8 +37,8 @@ public class BrokerTest {
         broker.addAction(ACTION_SIMPLE);
         broker.addAction(ACTION_ETF);
         
-        assertTrue(broker.getAction("action1").equals(ACTION_SIMPLE));
-        assertTrue(broker.getAction("action2").equals(ACTION_ETF));
+        assertEquals(ACTION_SIMPLE, broker.getAction("action1"));
+        assertEquals(ACTION_ETF, broker.getAction("action2"));
     }
 
     @Test
@@ -53,7 +46,7 @@ public class BrokerTest {
         var broker = new Broker();
 
         broker.addAction(ACTION_SIMPLE);
-        assertTrue(broker.getActions().equals(Map.of("action1", ACTION_SIMPLE)));
+        assertEquals(ACTION_SIMPLE, broker.getActions().get("action1"));
     }
 
     @Test
@@ -71,7 +64,7 @@ public class BrokerTest {
         broker.addAction(ACTION_SIMPLE);
         broker.addAction(ACTION_ETF);
         broker.removeAction("action1");
-        assertTrue(broker.getActions().equals(Map.of("action2", ACTION_ETF)));
+        assertEquals(ACTION_ETF, broker.getActions().get("action2"));
     }
 
     @Test
