@@ -25,6 +25,18 @@ limitations under the License.
     <description>This library allows the creation and handling of shares both simple or complex.</description>
     <url>https://github.com/DavidNavarreICS/SharePortfolio</url>
 
+    <configuration>
+        <excludes>
+            <exclude>**/*.md</exclude>
+            <exclude>.gitignore</exclude>
+            <exclude>LICENSE</exclude>
+            <exclude>LICENSE.txt</exclude>
+            <exclude>NOTICE</exclude>
+            <exclude>.github/**</exclude>
+            <exclude>target/**</exclude>
+        </excludes>
+    </configuration>
+    
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
