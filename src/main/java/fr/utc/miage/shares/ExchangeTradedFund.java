@@ -15,24 +15,37 @@
  */
 package fr.utc.miage.shares;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ExchangeTradedFund extends Action {
     Map<Company, Float> repartitions;
 
-    public ExchangeTradedFund(String libelle, Map<Company, Float> repartition) {
+    public ExchangeTradedFund(String libelle) {
         super(libelle);
-        this.repartitions = repartition;
+        this.repartitions = new HashMap<>();
     }
 
     public Map<Company, Float> getRepartitions() {
         return repartitions;
     }
 
-    public float getRepartitionForCompany(Company company) {
+    public Float getRepartitionForCompany(Company company) {
         return repartitions.get(company);
     }
     
+
+    public void setRepartitions(Map<Company, Float> repartitions) {
+        this.repartitions = repartitions;
+    }
+
+    public void setRepartitionsForCompany(Company company, Float repartition) {
+        if (repartition < 0 || repartition > 1) {
+            throw new IllegalArgumentException("Repartition must be between 0 and 1");
+        }
+        this.repartitions.put(company, repartition);
+    }
+
     @Override
     public float valeur(final Jour j) {
         throw new UnsupportedOperationException("ETF does not implement the valeur method");
