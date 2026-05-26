@@ -1,4 +1,3 @@
-package fr.utc.miage.shares;
 /*
  * Copyright 2025 David Navarre <David.Navarre@irit.fr>.
  *
@@ -14,6 +13,7 @@ package fr.utc.miage.shares;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package fr.utc.miage.shares;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
