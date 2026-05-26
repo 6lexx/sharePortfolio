@@ -17,6 +17,7 @@ package fr.utc.miage.shares;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ExchangeTradedFund extends Action {
     private static final float DEFAULT_ACTION_VALUE = 0;
@@ -41,10 +42,6 @@ public class ExchangeTradedFund extends Action {
     public Map<Company, Float> getRepartitions() {
         return repartitions;
     }
-
-    public Float getRepartitionForCompany(Company company) {
-        return repartitions.get(company);
-    }
     
 
     public void setRepartitions(Map<Company, Float> repartitions) {
@@ -57,6 +54,12 @@ public class ExchangeTradedFund extends Action {
         }
         this.repartitions.put(company, repartition);
     }
+    public float getRepartitionForCompany(Company company) {
+        if(company == null){
+            throw new IllegalArgumentException("Company cannot be null");
+        }
+        return repartitions.getOrDefault(company, 0.0f);
+    }
 
     @Override
     public float valeur(final Jour j) {
@@ -65,5 +68,21 @@ public class ExchangeTradedFund extends Action {
         } else {
             return DEFAULT_ACTION_VALUE;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ExchangeTradedFund other)) {
+            return false;
+        }
+        return super.equals(obj) && Objects.equals(this.repartitions, other.repartitions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), repartitions);
     }
 }

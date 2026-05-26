@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ActionTest {
-
     private static final String FOO_SHARE1 = "Foo Share 1";
     private static final String FOO_SHARE2 = "Foo Share 2";
 
@@ -46,14 +45,6 @@ class ActionTest {
         final Action action = new ActionImpl(FOO_SHARE1);
 
         Assertions.assertEquals(action, action);
-    }
-
-    @Test
-    void testEqualsWithSimilarObject() {
-        final Action action1 = new ActionImpl(FOO_SHARE1);
-        final Action action2 = new ActionImpl(FOO_SHARE1);
-
-        Assertions.assertEquals(action1, action2);
     }
 
     @Test

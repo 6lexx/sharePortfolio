@@ -22,13 +22,12 @@ public class Trader {
     private String prenom;
     private String email;
 
-
     public Trader(String nom, String prenom, String email) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
     }
-
+    
     public String getNom() {
         return nom;
     }

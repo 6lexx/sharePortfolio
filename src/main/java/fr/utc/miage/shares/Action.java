@@ -23,7 +23,6 @@ import java.util.Objects;
  * @author David Navarre &lt;David.Navarre at irit.fr&gt;
  */
 public abstract class Action {
-
     private final String libelle;
 
     /**
