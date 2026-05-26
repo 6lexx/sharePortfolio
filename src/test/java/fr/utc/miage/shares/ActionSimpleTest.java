@@ -17,6 +17,7 @@ package fr.utc.miage.shares;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
@@ -47,10 +48,57 @@ public class ActionSimpleTest {
     }
 
     @Test
-    void testValeur() {
+    void testSetCompany(){
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        var newCompany = new Company("Microsoft");
+        action.setCompany(newCompany);
+        assertEquals(newCompany, action.getCompany());
+    }
+
+    @Test
+    void testEqualsWithSameLabel() {
+        var action1 = new ActionSimple(VALID_LABEL, COMPANY);
+        var action2 = new ActionSimple(VALID_LABEL, new Company("Different Company"));
+
+        assertEquals(action1, action2);
+    }
+
+    @Test
+    void testEqualsWithDifferentLabel() {
+        var action1 = new ActionSimple(VALID_LABEL, COMPANY);
+        var action2 = new ActionSimple("Microsoft", COMPANY);
+
+        assertNotEquals(action1, action2);
+    }
+
+    @Test
+    void testEqualsWithNull() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+
+        assertNotEquals(action, null);
+    }
+
+    @Test
+    void testEqualsWithDifferentClass() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        var company = new Company(VALID_LABEL);
+
+        assertNotEquals(action, company);
+    }
+
+    @Test
+    void testValeurDefaultValue() {
         var action = new ActionSimple(VALID_LABEL, COMPANY);
         var actual = action.valeur(VALID_DAY);
         assertEquals(0f, actual, 0.01f);
+    }
+
+    @Test
+    void testValeurWithValidDay() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        action.saveDailyPrice(VALID_DAY, 150.0f);
+        var actual = action.valeur(VALID_DAY);
+        assertEquals(150.0f, actual, 0.01f);
     }
 
     @Test
