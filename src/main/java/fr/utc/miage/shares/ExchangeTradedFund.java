@@ -15,14 +15,15 @@
  */
 package fr.utc.miage.shares;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ExchangeTradedFund extends Action {
     Map<Company, Float> repartitions;
 
-    public ExchangeTradedFund(String libelle, Map<Company, Float> repartition) {
+    public ExchangeTradedFund(String libelle) {
         super(libelle);
-        this.repartitions = repartition;
+        this.repartitions = new HashMap<>();
     }
 
     public Map<Company, Float> getRepartitions() {
@@ -32,6 +33,8 @@ public class ExchangeTradedFund extends Action {
     public float getRepartitionForCompany(Company company) {
         return repartitions.get(company);
     }
+
+    
     
     @Override
     public float valeur(final Jour j) {
