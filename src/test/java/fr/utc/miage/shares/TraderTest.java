@@ -16,9 +16,8 @@ package fr.utc.miage.shares;
  */
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import static fr.utc.miage.shares.Trader.createTrader;
@@ -100,35 +99,41 @@ class TraderTest {
 
     @Test
     void testEqualsWithSameObjectTrue() {
-        assertTrue(trader.equals(trader));
+        assertEquals(trader, trader);
     }
 
     @Test
     void testEqualsWithNullFalse() {
-        assertFalse(trader.equals(null));
+        assertNotEquals(trader, null);
     }
 
     @Test
     void testEqualsWithDifferentObjectAndDifferentClassFalse() {
-        assertFalse(trader.equals(NOM));
+        assertNotEquals(trader, NOM);
     }
 
     @Test
     void testEqualsWithDifferentNameFalse() {
         final Trader other = new Trader(NOM_POUR_EQUALS ,PRENOM,EMAIL);
-        assertFalse(trader.equals(other));
+        assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithDifferentFirstnameFalse() {
         final Trader other = new Trader(NOM,PRENOM_POUR_EQUALS ,EMAIL);
-        assertFalse(trader.equals(other));
+        assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithDifferentEmailFalse() {
         final Trader other = new Trader(NOM,PRENOM,EMAIL_POUR_EQUALS );
-        assertFalse(trader.equals(other));
+        assertNotEquals(trader, other);
+    }
+
+    @Test
+    void testEqualsWithSameValuesTrue() {
+        final Trader other = new Trader(NOM,PRENOM,EMAIL);
+        assertEquals(trader, other);
     }
 
     @Test
