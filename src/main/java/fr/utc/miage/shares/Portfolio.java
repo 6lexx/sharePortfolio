@@ -27,7 +27,7 @@ public class Portfolio {
 
 
     /**
-     * Permet d'acheter une/plusieurs action(s) simple(s) en l'ajoutant à son portefeuille
+     * Permet d'acheter une/plusieurs action(s) en l'ajoutant à son portefeuille
      */
     public void buyAction(Action action, int quantity){
         if(quantity <= 0) {
