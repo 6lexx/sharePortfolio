@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 
 public class ActionSimpleTest {
    private static final String VALID_LABEL = "Apple";
-   private static final String INVALID_LABEL = null;
    private static final Jour VALID_DAY = new Jour(2026, 20);
    private static final Jour INVALID_DAY = null;
    private static final Company COMPANY = new Company(VALID_LABEL);
@@ -58,9 +57,16 @@ public class ActionSimpleTest {
     @Test
     void testEqualsWithSameLabel() {
         var action1 = new ActionSimple(VALID_LABEL, COMPANY);
-        var action2 = new ActionSimple(VALID_LABEL, new Company("Different Company"));
+        var action2 = new ActionSimple(VALID_LABEL, COMPANY);
 
         assertEquals(action1, action2);
+    }
+
+    @Test
+    void testEqualsWithSameInstance() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+
+        assertEquals(action, action);
     }
 
     @Test
@@ -84,6 +90,45 @@ public class ActionSimpleTest {
         var company = new Company(VALID_LABEL);
 
         assertNotEquals(action, company);
+    }
+
+    @Test
+    void testEqualsWithDifferentCompany() {
+        var action1 = new ActionSimple(VALID_LABEL, COMPANY);
+        var action2 = new ActionSimple(VALID_LABEL, new Company(VALID_LABEL));
+
+        assertNotEquals(action1, action2);
+    }
+
+    @Test
+    void testEqualsWithDifferentDailyPrices() {
+        var action1 = new ActionSimple(VALID_LABEL, COMPANY);
+        var action2 = new ActionSimple(VALID_LABEL, COMPANY);
+        var anotherDay = new Jour(2026, 21);
+
+        action1.saveDailyPrice(VALID_DAY, 150.0f);
+        action2.saveDailyPrice(anotherDay, 150.0f);
+
+        assertNotEquals(action1, action2);
+    }
+
+    @Test
+    void testHashCodeWithSameState() {
+        var action1 = new ActionSimple(VALID_LABEL, COMPANY);
+        var action2 = new ActionSimple(VALID_LABEL, COMPANY);
+
+        action1.saveDailyPrice(VALID_DAY, 150.0f);
+        action2.saveDailyPrice(VALID_DAY, 150.0f);
+
+        assertEquals(action1.hashCode(), action2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithDifferentState() {
+        var action1 = new ActionSimple(VALID_LABEL, COMPANY);
+        var action2 = new ActionSimple("Microsoft", COMPANY);
+
+        assertNotEquals(action1.hashCode(), action2.hashCode());
     }
 
     @Test

@@ -61,6 +61,12 @@ public class ExchangeTradedFundTest {
     }
 
     @Test
+    public void TestEqualsWithSameInstance(){
+        var etf = new ExchangeTradedFund("etf1");
+        assertEquals(etf, etf);
+    }
+
+    @Test
     public void TestEqualsWithInvalideParam(){
         var etf1 = new ExchangeTradedFund("etf1");
         var etf2 = new ExchangeTradedFund("etf2");
@@ -81,6 +87,17 @@ public class ExchangeTradedFundTest {
     }
 
     @Test
+    public void TestEqualsWithDifferentRepartitions(){
+        var sharedCompany = new Company("Apple");
+        var repartitionA = Map.of(sharedCompany, 0.5f);
+        var repartitionB = Map.of(sharedCompany, 1.0f);
+        var etf1 = new ExchangeTradedFund("etf1", repartitionA);
+        var etf2 = new ExchangeTradedFund("etf1", repartitionB);
+
+        assertNotEquals(etf1, etf2);
+    }
+
+    @Test
     public void TestHashCodeWithValideParam(){
         var etf1 = new ExchangeTradedFund("etf1");
         var etf2 = new ExchangeTradedFund("etf1");
@@ -91,6 +108,17 @@ public class ExchangeTradedFundTest {
     public void TestHashCodeWithInvalideParam(){
         var etf1 = new ExchangeTradedFund("etf1");
         var etf2 = new ExchangeTradedFund("etf2");
+        assertNotEquals(etf1.hashCode(), etf2.hashCode());
+    }
+
+    @Test
+    public void TestHashCodeWithDifferentRepartitions(){
+        var sharedCompany = new Company("Apple");
+        var repartitionA = Map.of(sharedCompany, 0.5f);
+        var repartitionB = Map.of(sharedCompany, 1.0f);
+        var etf1 = new ExchangeTradedFund("etf1", repartitionA);
+        var etf2 = new ExchangeTradedFund("etf1", repartitionB);
+
         assertNotEquals(etf1.hashCode(), etf2.hashCode());
     }
 

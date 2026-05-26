@@ -17,6 +17,7 @@ package fr.utc.miage.shares;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Allows the creation of simple Action objects.
@@ -72,21 +73,21 @@ public class ActionSimple extends Action {
         }
     }
 
-
-
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ActionSimple other)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        return super.equals(obj);
+        return super.equals(obj)
+                && Objects.equals(this.company, other.company)
+                && Objects.equals(this.mapCours, other.mapCours);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(super.hashCode(), company, mapCours);
     }
 }

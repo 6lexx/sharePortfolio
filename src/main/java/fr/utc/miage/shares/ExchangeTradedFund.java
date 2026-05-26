@@ -17,6 +17,7 @@ package fr.utc.miage.shares;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ExchangeTradedFund extends Action {
     Map<Company, Float> repartitions;
@@ -51,17 +52,17 @@ public class ExchangeTradedFund extends Action {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ExchangeTradedFund other)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        return super.equals(obj);
+        return super.equals(obj) && Objects.equals(this.repartitions, other.repartitions);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(super.hashCode(), repartitions);
     }
 }
