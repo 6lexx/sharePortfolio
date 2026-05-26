@@ -12,12 +12,17 @@ public class PortfolioTest {
     private static final String ACTUAL_ACTION_LIBELLE = "ACTION LIBELLE TEST";
     private static final String ACTUAL_COMPAGNY_NAME = "Company Test";
 
-
-
-
+    /**
+     * Vérifie qu'un achat d'une action simple depuis un portefeuille vide fonctionne correctement.
+     */
     @Test
-    void TestBuySimpleActionFromEmptyPortfolio(){
-        // Test d'ajout d'actions depuis 0 actions
+    void TestBuyActionFromEmptyPortfolio(){
+        Portfolio p = new Portfolio();
+        Company c = new Company(ACTUAL_COMPAGNY_NAME);
+        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+
+        Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
+        Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY);
     }
 
     @Test
@@ -30,13 +35,13 @@ public class PortfolioTest {
      * invalide (zéro ou négative).
      */
     @Test
-    void TestBuyActionSimpleThrowExceptionIfQuantityNegative(){
+    void TestBuyActionThrowExceptionIfQuantityNegative(){
         Portfolio p = new Portfolio();
         Company c = new Company(ACTUAL_COMPAGNY_NAME);
         ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
 
         Assertions.assertThrows(IllegalArgumentException.class, () ->
-                p.buyActionSimple(a, ACTUAL_QUANTITY_NULL)
+                p.buyAction(a, ACTUAL_QUANTITY_NULL)
         );
     }
 
