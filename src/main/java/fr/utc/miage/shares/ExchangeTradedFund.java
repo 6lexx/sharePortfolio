@@ -22,8 +22,12 @@ public class ExchangeTradedFund extends Action {
     Map<Company, Float> repartitions;
 
     public ExchangeTradedFund(String libelle) {
+        this(libelle, new HashMap<>());
+    }
+
+    public ExchangeTradedFund(String libelle, Map<Company, Float> repartitions) {
         super(libelle);
-        this.repartitions = new HashMap<>();
+        this.repartitions = repartitions;
     }
 
     public Map<Company, Float> getRepartitions() {
@@ -34,10 +38,24 @@ public class ExchangeTradedFund extends Action {
         return repartitions.get(company);
     }
 
-    
-    
     @Override
     public float valeur(final Jour j) {
         throw new UnsupportedOperationException("ETF does not implement the valeur method");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

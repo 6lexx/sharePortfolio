@@ -52,17 +52,41 @@ public class ActionSimple extends Action {
 
     // enrg possible si pas de cours pour ce jour
     public void saveDailyPrice(final Jour j, final float v) {
+        if(j == null)
+            throw new IllegalArgumentException("Jour cannot be null");
         if (!this.mapCours.containsKey(j)) {
             this.mapCours.put(j, v);
         }
+        else 
+            throw new IllegalArgumentException("A price for this day already exists");
     }
 
     @Override
     public float valeur(final Jour j) {
+        if(j == null)
+            throw new IllegalArgumentException("Jour cannot be null");
         if (this.mapCours.containsKey(j)) {
             return this.mapCours.get(j);
         } else {
             return DEFAULT_ACTION_VALUE;
         }
+    }
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

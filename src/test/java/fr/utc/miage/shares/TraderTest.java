@@ -14,11 +14,14 @@ package fr.utc.miage.shares;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import static fr.utc.miage.shares.Trader.createTrader;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TraderTest {
     private final String NOM = "Doe";
@@ -27,6 +30,7 @@ class TraderTest {
     private final String NOM_POUR_EQUALS = "Dupont";
     private final String PRENOM_POUR_EQUALS  = "Jean";
     private final String EMAIL_POUR_EQUALS  = "jean.dupont@mail.com";
+    private final Company VALID_COMPANY = new Company("Apple");
 
     private final Trader trader =  new Trader(NOM,PRENOM,EMAIL);
 
