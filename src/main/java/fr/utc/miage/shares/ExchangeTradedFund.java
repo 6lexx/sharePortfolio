@@ -27,6 +27,9 @@ public class ExchangeTradedFund extends Action {
 
     public ExchangeTradedFund(String libelle, Map<Company, Float> repartitions) {
         super(libelle);
+        if(libelle == null || repartitions == null){
+            throw new IllegalArgumentException("Libelle and repartitions cannot be null");
+        }
         this.repartitions = repartitions;
     }
 
@@ -35,7 +38,10 @@ public class ExchangeTradedFund extends Action {
     }
 
     public float getRepartitionForCompany(Company company) {
-        return repartitions.get(company);
+        if(company == null){
+            throw new IllegalArgumentException("Company cannot be null");
+        }
+        return repartitions.getOrDefault(company, 0.0f);
     }
 
     @Override
