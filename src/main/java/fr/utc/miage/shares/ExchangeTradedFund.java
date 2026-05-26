@@ -19,11 +19,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ExchangeTradedFund extends Action {
+    private static final float DEFAULT_ACTION_VALUE = 0;
     Map<Company, Float> repartitions;
+
+    private final Map<Jour, Float> mapCours;
 
     public ExchangeTradedFund(String libelle) {
         super(libelle);
         this.repartitions = new HashMap<>();
+        this.mapCours = new HashMap<>();
+    }
+
+    public Map<Jour, Float> getMapCours() {
+        return mapCours;
+    }
+
+    public void setMapCours(Jour jour, Float f) {
+        mapCours.put(jour, f);
     }
 
     public Map<Company, Float> getRepartitions() {
@@ -48,6 +60,10 @@ public class ExchangeTradedFund extends Action {
 
     @Override
     public float valeur(final Jour j) {
-        throw new UnsupportedOperationException("ETF does not implement the valeur method");
+        if (this.mapCours.containsKey(j)) {
+            return this.mapCours.get(j);
+        } else {
+            return DEFAULT_ACTION_VALUE;
+        }
     }
 }
