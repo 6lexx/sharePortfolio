@@ -51,7 +51,11 @@ public class Portfolio {
             if (quantity > this.lignes.get(action)) {
                 throw new IllegalArgumentException("Erreur - Il est impossible de vendre plus actions que vous n'en possèdez");
             }
-            this.lignes.put(action, this.lignes.get(action) - quantity);
+            if(this.lignes.get(action) - quantity == 0) {
+                this.lignes.remove(action);
+            } else {
+                this.lignes.put(action, this.lignes.get(action) - quantity);
+            }
         } else {
             throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
         }
