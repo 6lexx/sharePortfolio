@@ -40,6 +40,9 @@ public abstract class Action {
      * @param libelle the name of the action object
      */
     protected Action(final String libelle) {
+        if(libelle == null) {
+            throw new IllegalArgumentException("Libelle must be non-null");
+        }
         this.libelle = libelle;
     }
 

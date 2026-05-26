@@ -20,24 +20,40 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ExchangeTradedFund extends Action {
+    private static final float DEFAULT_ACTION_VALUE = 0;
     Map<Company, Float> repartitions;
 
+    private final Map<Jour, Float> mapCours;
+
     public ExchangeTradedFund(String libelle) {
-        this(libelle, new HashMap<>());
+        super(libelle);
+        this.repartitions = new HashMap<>();
+        this.mapCours = new HashMap<>();
     }
 
-    public ExchangeTradedFund(String libelle, Map<Company, Float> repartitions) {
-        super(libelle);
-        if(libelle == null || repartitions == null){
-            throw new IllegalArgumentException("Libelle and repartitions cannot be null");
-        }
-        this.repartitions = repartitions;
+    public Map<Jour, Float> getMapCours() {
+        return mapCours;
+    }
+
+    public void setMapCours(Jour jour, Float f) {
+        mapCours.put(jour, f);
     }
 
     public Map<Company, Float> getRepartitions() {
         return repartitions;
     }
+    
 
+    public void setRepartitions(Map<Company, Float> repartitions) {
+        this.repartitions = repartitions;
+    }
+
+    public void setRepartitionsForCompany(Company company, Float repartition) {
+        if (repartition < 0 || repartition > 1) {
+            throw new IllegalArgumentException("Repartition must be between 0 and 1");
+        }
+        this.repartitions.put(company, repartition);
+    }
     public float getRepartitionForCompany(Company company) {
         if(company == null){
             throw new IllegalArgumentException("Company cannot be null");
@@ -47,7 +63,11 @@ public class ExchangeTradedFund extends Action {
 
     @Override
     public float valeur(final Jour j) {
-        throw new UnsupportedOperationException("ETF does not implement the valeur method");
+        if (this.mapCours.containsKey(j)) {
+            return this.mapCours.get(j);
+        } else {
+            return DEFAULT_ACTION_VALUE;
+        }
     }
 
     @Override
