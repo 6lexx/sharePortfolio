@@ -67,4 +67,18 @@ public class PortfolioTest {
                 p.sellAction(a, ACTUAL_QUANTITY_NULL)
         );
     }
+
+    /**
+     * Vérifie qu'une exception est levée lors de la vente d'une action absente du portefeuille.
+     */
+    @Test
+    void TestSellActionThrowExceptionIfActionDoesNotExist(){
+        Portfolio p = new Portfolio();
+        Company c = new Company(ACTUAL_COMPAGNY_NAME);
+        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+                p.sellAction(a, ACTUAL_QUANTITY)
+        );
+    }
 }
