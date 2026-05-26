@@ -1,9 +1,8 @@
 package fr.utc.miage.shares;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 public class PortfolioTest {
     private static final int ACTUAL_QUANTITY_NULL = 0;
@@ -12,15 +11,22 @@ public class PortfolioTest {
     private static final String ACTUAL_ACTION_LIBELLE = "ACTION LIBELLE TEST";
     private static final String ACTUAL_COMPAGNY_NAME = "Company Test";
 
+
+    private Portfolio p;
+    private ActionSimple a;
+
+    @BeforeEach
+    void setUp() {
+        Portfolio p = new Portfolio();
+        Company c = new Company(ACTUAL_COMPAGNY_NAME);
+        Action a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+    }
+
     /**
      * Vérifie qu'un achat d'une action depuis un portefeuille vide fonctionne correctement.
      */
     @Test
     void TestBuyActionFromEmptyPortfolio(){
-        Portfolio p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
-
         Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
         Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY);
     }
@@ -30,10 +36,6 @@ public class PortfolioTest {
      */
     @Test
     void TestBuySimpleActionWithActionsAlreadyInPortfolio(){
-        Portfolio p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
-
         p.buyAction(a, ACTUAL_QUANTITY);
         Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
         Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY * 2);
@@ -45,10 +47,6 @@ public class PortfolioTest {
      */
     @Test
     void TestBuyActionThrowExceptionIfQuantityNull(){
-        Portfolio p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
-
         Assertions.assertThrows(IllegalArgumentException.class, () ->
                 p.buyAction(a, ACTUAL_QUANTITY_NULL)
         );
@@ -59,10 +57,6 @@ public class PortfolioTest {
      */
     @Test
     void TestSellActionThrowExceptionIfQuantityNull(){
-        Portfolio p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
-
         Assertions.assertThrows(IllegalArgumentException.class, () ->
                 p.sellAction(a, ACTUAL_QUANTITY_NULL)
         );
@@ -73,10 +67,6 @@ public class PortfolioTest {
      */
     @Test
     void TestSellActionThrowExceptionIfActionDoesNotExist(){
-        Portfolio p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
-
         Assertions.assertThrows(IllegalArgumentException.class, () ->
                 p.sellAction(a, ACTUAL_QUANTITY)
         );
@@ -87,13 +77,20 @@ public class PortfolioTest {
      */
     @Test
     void TestSellActionThrowExceptionIfQuantityExceedsOwnedActions(){
-        Portfolio p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
-
         p.buyAction(a, ACTUAL_QUANTITY);
         Assertions.assertThrows(IllegalArgumentException.class, () ->
                 p.sellAction(a, ACTUAL_QUANTITY_EXCEEDING)
         );
+    }
+
+    /**
+     * Vérifie que l'action est correctement supprimée du Portfolio lorsqu'une
+     * vente d'actions réduit la quantité d'actions à 0.
+     */
+    @Test
+    void TestSellActionDeleteActionWhenQuantityEqualZero() {
+        p.buyAction(a, ACTUAL_QUANTITY);
+        Assertions.assertDoesNotThrow(() -> p.sellAction(a, ACTUAL_QUANTITY));
+        Assertions.assertNull(p.getLignes().get(a));
     }
 }
