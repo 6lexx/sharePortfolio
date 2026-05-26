@@ -29,7 +29,7 @@ public class Portfolio {
     /**
      * Permet d'acheter une/plusieurs action(s) simple(s) en l'ajoutant à son portefeuille
      */
-    public void buyActionSimple(ActionSimple action, int quantity){
+    public void buyAction(Action action, int quantity){
         if(quantity <= 0) {
             throw new IllegalArgumentException("Erreur - Il est impossible d'acheter 0 actions");
         }
@@ -41,9 +41,9 @@ public class Portfolio {
     }
 
     /**
-     * Permet de vendre une/plusieurs action(s) simple(s) et de les retirer de son portefeuille
+     * Permet de vendre une/plusieurs action(s) et de les retirer de son portefeuille
      */
-    public void sellActionSimple(ActionSimple action, int quantity){
+    public void sellAction(Action action, int quantity){
         if(quantity <= 0) {
             throw new IllegalArgumentException("Erreur - Il est impossible de vendre 0 actions");
         }
@@ -56,36 +56,4 @@ public class Portfolio {
             throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
         }
     }
-
-    /**
-     * Permet d'acheter un/plusieurs ETF en l'ajoutant à son portefeuille
-     */
-    public void buyETF(ExchangeTradedFund etf, int quantity){
-        if(quantity <= 0){
-            throw new IllegalArgumentException("Erreur - Il est impossible d'acheter 0 actions");
-        }
-        if(this.lignes.containsKey(etf)){
-            this.lignes.put(etf, this.lignes.get(etf) + quantity);
-        } else {
-            this.lignes.put(etf, quantity);
-        }
-    }
-
-    /**
-     * Permet de vendre un/plusieurs ETF et de les retirer de son portefeuille
-     */
-    public void sellETF(ExchangeTradedFund etf, int quantity){
-        if(quantity <= 0) {
-            throw new IllegalArgumentException("Erreur - Il est impossible de vendre 0 actions");
-        }
-        if(this.lignes.containsKey(etf)){
-            if(quantity > this.lignes.get(etf)){
-                throw new IllegalArgumentException("Erreur - Il est impossible de vendre plus actions que vous n'en possèdez");
-            }
-            this.lignes.put(etf, this.lignes.get(etf) - quantity);
-        } else {
-            throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
-        }
-    }
-
 }
