@@ -17,9 +17,9 @@ public class PortfolioTest {
 
     @BeforeEach
     void setUp() {
-        Portfolio p = new Portfolio();
+        p = new Portfolio();
         Company c = new Company(ACTUAL_COMPAGNY_NAME);
-        Action a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+        a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
     }
 
     /**
