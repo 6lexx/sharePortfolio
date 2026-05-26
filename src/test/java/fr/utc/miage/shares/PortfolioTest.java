@@ -25,9 +25,18 @@ public class PortfolioTest {
         Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY);
     }
 
+    /**
+     * Vérifie qu'un achat d'une action depuis un portefeuille contenant des actions fonctionne correctement.
+     */
     @Test
     void TestBuySimpleActionWithActionsAlreadyInPortfolio(){
-        // Test d'ajout d'actions depuis un minimum d'actions
+        Portfolio p = new Portfolio();
+        Company c = new Company(ACTUAL_COMPAGNY_NAME);
+        ActionSimple a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+
+        p.buyAction(a, ACTUAL_QUANTITY);
+        Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
+        Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY * 2);
     }
 
     /**
