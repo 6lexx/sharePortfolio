@@ -17,6 +17,7 @@ package fr.utc.miage.shares;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Allows the creation of simple Action objects.
@@ -52,17 +53,41 @@ public class ActionSimple extends Action {
 
     // enrg possible si pas de cours pour ce jour
     public void saveDailyPrice(final Jour j, final float v) {
+        if(j == null)
+            throw new IllegalArgumentException("Jour cannot be null");
         if (!this.mapCours.containsKey(j)) {
             this.mapCours.put(j, v);
         }
+        else 
+            throw new IllegalArgumentException("A price for this day already exists");
     }
 
     @Override
     public float valeur(final Jour j) {
+        if(j == null)
+            throw new IllegalArgumentException("Jour cannot be null");
         if (this.mapCours.containsKey(j)) {
             return this.mapCours.get(j);
         } else {
             return DEFAULT_ACTION_VALUE;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ActionSimple other)) {
+            return false;
+        }
+        return super.equals(obj)
+                && Objects.equals(this.company, other.company)
+                && Objects.equals(this.mapCours, other.mapCours);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), company, mapCours);
     }
 }

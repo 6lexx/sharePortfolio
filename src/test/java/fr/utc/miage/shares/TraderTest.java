@@ -1,4 +1,3 @@
-package fr.utc.miage.shares;
 /*
  * Copyright 2025 David Navarre <David.Navarre@irit.fr>.
  *
@@ -14,11 +13,14 @@ package fr.utc.miage.shares;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package fr.utc.miage.shares;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import static fr.utc.miage.shares.Trader.createTrader;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TraderTest {
     private final String NOM = "Doe";
@@ -27,6 +29,7 @@ class TraderTest {
     private final String NOM_POUR_EQUALS = "Dupont";
     private final String PRENOM_POUR_EQUALS  = "Jean";
     private final String EMAIL_POUR_EQUALS  = "jean.dupont@mail.com";
+    private final Company VALID_COMPANY = new Company("Apple");
 
     private final Trader trader =  new Trader(NOM,PRENOM,EMAIL);
 
@@ -96,35 +99,41 @@ class TraderTest {
 
     @Test
     void testEqualsWithSameObjectTrue() {
-        assertTrue(trader.equals(trader));
+        assertEquals(trader, trader);
     }
 
     @Test
     void testEqualsWithNullFalse() {
-        assertFalse(trader.equals(null));
+        assertNotEquals(trader, null);
     }
 
     @Test
     void testEqualsWithDifferentObjectAndDifferentClassFalse() {
-        assertFalse(trader.equals(NOM));
+        assertNotEquals(trader, NOM);
     }
 
     @Test
     void testEqualsWithDifferentNameFalse() {
         final Trader other = new Trader(NOM_POUR_EQUALS ,PRENOM,EMAIL);
-        assertFalse(trader.equals(other));
+        assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithDifferentFirstnameFalse() {
         final Trader other = new Trader(NOM,PRENOM_POUR_EQUALS ,EMAIL);
-        assertFalse(trader.equals(other));
+        assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithDifferentEmailFalse() {
         final Trader other = new Trader(NOM,PRENOM,EMAIL_POUR_EQUALS );
-        assertFalse(trader.equals(other));
+        assertNotEquals(trader, other);
+    }
+
+    @Test
+    void testEqualsWithSameValuesTrue() {
+        final Trader other = new Trader(NOM,PRENOM,EMAIL);
+        assertEquals(trader, other);
     }
 
     @Test

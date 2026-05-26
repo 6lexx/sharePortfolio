@@ -18,60 +18,99 @@ package fr.utc.miage.shares;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BrokerTest {
-    private static final Company COMPANY1 = new Company("company1");
-    private static final Company COMPANY2 = new Company("company2");
+class BrokerTest {
 
-    private static final Action ACTION_SIMPLE = new ActionSimple("action1", COMPANY1);
-    private static final Map<Company, Float> ETFS = Map.of(COMPANY1, 0.5f, COMPANY2, 0.5f);
-    
-    private static final Action ACTION_ETF = new ExchangeTradedFund("action2", ETFS);
+    private Broker broker;
+    private Action action1;
+    private Action action2;
 
-    @Test
-    void testGetAction() {
-        var broker = new Broker();
-
-        broker.addAction(ACTION_SIMPLE);
-        broker.addAction(ACTION_ETF);
-        
-        assertEquals(ACTION_SIMPLE, broker.getAction("action1"));
-        assertEquals(ACTION_ETF, broker.getAction("action2"));
+    @BeforeEach
+    void setUp() {
+        broker = new Broker();
+        action1 = new ActionSimple("AAPL", new Company("Apple"));
+        action2 = new ActionSimple("GOOG", new Company("Google"));
     }
 
     @Test
-    void testAddAction() {
-        var broker = new Broker();
+    void getAvailableActionsMap_shouldReturnEmptyMapInitially() {
+        Map<Action, Integer> map = broker.getAvailableActionsMap();
 
-        broker.addAction(ACTION_SIMPLE);
-        assertEquals(ACTION_SIMPLE, broker.getActions().get("action1"));
+        assertNotNull(map);
+        assertTrue(map.isEmpty());
     }
 
     @Test
-    void testAddActionDuplicate() {
-        var broker = new Broker();
+    void addAction_shouldAddNewAction() {
+        broker.addAction(action1, 10);
 
-        broker.addAction(ACTION_SIMPLE);
-        assertThrows(IllegalArgumentException.class, () -> broker.addAction(ACTION_SIMPLE));
+        assertEquals(10, broker.getActionCount(action1));
+        assertEquals(1, broker.getAvailableActionsMap().size());
     }
 
     @Test
-    void testRemoveAction() {
-        var broker = new Broker();
+    void addAction_shouldIncreaseExistingActionCount() {
+        broker.addAction(action1, 10);
+        broker.addAction(action1, 5);
 
-        broker.addAction(ACTION_SIMPLE);
-        broker.addAction(ACTION_ETF);
-        broker.removeAction("action1");
-        assertEquals(ACTION_ETF, broker.getActions().get("action2"));
+        assertEquals(15, broker.getActionCount(action1));
+        assertEquals(1, broker.getAvailableActionsMap().size());
     }
 
     @Test
-    void testRemoveActionNotExist(){
-        var broker = new Broker();
+    void removeAction_shouldDecreaseCount() {
+        broker.addAction(action1, 10);
 
-        broker.addAction(ACTION_ETF);
-        assertThrows(IllegalArgumentException.class, () -> broker.removeAction("action1"));
+        broker.removeAction(action1, 4);
+
+        assertEquals(6, broker.getActionCount(action1));
+    }
+
+    @Test
+    void removeAction_shouldRemoveEntryWhenCountBecomesZero() {
+        broker.addAction(action1, 10);
+
+        broker.removeAction(action1, 10);
+
+        assertNull(broker.getActionCount(action1));
+        assertTrue(broker.getAvailableActionsMap().isEmpty());
+    }
+
+    @Test
+    void removeAction_shouldThrowWhenNotEnoughActions() {
+        broker.addAction(action1, 3);
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> broker.removeAction(action1, 5)
+        );
+
+        assertEquals("Not enough actions available to remove", ex.getMessage());
+    }
+
+    @Test
+    void removeAction_shouldThrowWhenActionNotFound() {
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> broker.removeAction(action1, 1)
+        );
+
+        assertEquals("Action not found in broker", ex.getMessage());
+    }
+
+    @Test
+    void addAction_shouldHandleDifferentActionsIndependently() {
+        broker.addAction(action1, 10);
+        broker.addAction(action2, 7);
+
+        assertEquals(10, broker.getActionCount(action1));
+        assertEquals(7, broker.getActionCount(action2));
+        assertEquals(2, broker.getAvailableActionsMap().size());
     }
 }

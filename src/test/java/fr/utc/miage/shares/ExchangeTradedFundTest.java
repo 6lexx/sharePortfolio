@@ -18,20 +18,18 @@ package fr.utc.miage.shares;
 import java.util.HashMap;
 import java.util.Map;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class ExchangeTradedFundTest {
 
     private final Company COMPANY = new Company("Company");
     private final ExchangeTradedFund CORRECT_ETF = new ExchangeTradedFund("ETF");
-    private final ExchangeTradedFund INCORRECT_ETF = new ExchangeTradedFund(null);
     public static final Map<Company, Float> REPARTITION = Map.of(new Company("Apple"), 0.5f, new Company("Microsoft"), 0.5f);
-
-    private final Map<Company, Float> REPARTITION = Map.of(COMPANY, 0.5f);
 
     @Test
     public void TestgetRepartitionsWithValideParam(){
@@ -39,29 +37,128 @@ public class ExchangeTradedFundTest {
     }
 
     @Test
-    public void TestgetRepartitionsWithInvalideParam(){
-        assertEquals(new HashMap<>(), INCORRECT_ETF.getRepartitions());
+    public void TestgetRepartitionForCompanyWithValideParam(){
+        assertEquals(0.0f, CORRECT_ETF.getRepartitionForCompany(COMPANY));
+    }
+
+    @Test
+    public void TestGetRepartitionForCompanyWithInvalideParam(){
+        var etf = new ExchangeTradedFund("ETF", REPARTITION);
+
+        assertEquals(0.0f, etf.getRepartitionForCompany(COMPANY));
+    }
+
+    @Test
+    public void TestGetRepartitionForCompanyWithNullParam(){
+        assertThrows(IllegalArgumentException.class, () -> CORRECT_ETF.getRepartitionForCompany(null));
+    }
+
+    @Test
+    public void TestEqualsWithValideParam(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        var etf2 = new ExchangeTradedFund("etf1");
+        assertEquals(etf1, etf2);
+    }
+
+    @Test
+    public void TestEqualsWithSameInstance(){
+        var etf = new ExchangeTradedFund("etf1");
+        assertEquals(etf, etf);
+    }
+
+    @Test
+    public void TestEqualsWithInvalideParam(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        var etf2 = new ExchangeTradedFund("etf2");
+        assertNotEquals(etf1, etf2);
+    }
+
+    @Test
+    public void TestEqualsWithNullParam(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        assertNotEquals(etf1, null);
+    }
+
+    @Test
+    public void TestEqualsWithDifferentClass(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        var company = new Company("company");
+        assertNotEquals(etf1, company);
+    }
+
+    @Test
+    public void TestEqualsWithDifferentRepartitions(){
+        var sharedCompany = new Company("Apple");
+        var repartitionA = Map.of(sharedCompany, 0.5f);
+        var repartitionB = Map.of(sharedCompany, 1.0f);
+        var etf1 = new ExchangeTradedFund("etf1", repartitionA);
+        var etf2 = new ExchangeTradedFund("etf1", repartitionB);
+
+        assertNotEquals(etf1, etf2);
+    }
+
+    @Test
+    public void TestHashCodeWithValideParam(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        var etf2 = new ExchangeTradedFund("etf1");
+        assertEquals(etf1.hashCode(), etf2.hashCode());
+    }
+
+    @Test
+    public void TestHashCodeWithInvalideParam(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        var etf2 = new ExchangeTradedFund("etf2");
+        assertNotEquals(etf1.hashCode(), etf2.hashCode());
+    }
+
+    @Test
+    public void TestHashCodeWithDifferentRepartitions(){
+        var sharedCompany = new Company("Apple");
+        var repartitionA = Map.of(sharedCompany, 0.5f);
+        var repartitionB = Map.of(sharedCompany, 1.0f);
+        var etf1 = new ExchangeTradedFund("etf1", repartitionA);
+        var etf2 = new ExchangeTradedFund("etf1", repartitionB);
+
+        assertNotEquals(etf1.hashCode(), etf2.hashCode());
+    }
+
+    @Test
+    public void TestHashCodeWithDifferentClass(){
+        var etf1 = new ExchangeTradedFund("etf1");
+        var company = new Company("company");
+        assertNotEquals(etf1.hashCode(), company.hashCode());
     }
 
     @Test
     void testConstructorEmpty() {
-        assertAll(ExchangeTradedFundTest::new);
+        assertDoesNotThrow(() -> new ExchangeTradedFund("ETF"));
     }
 
     @Test
     void testConstructorWithParameters() {
-        assertAll(() -> new ExchangeTradedFund("Vanguard", REPARTITION));
+        var etf = new ExchangeTradedFund("Vanguard", REPARTITION);
+
+        assertAll(
+                () -> assertEquals("Vanguard", etf.getLibelle()),
+                () -> assertEquals(REPARTITION, etf.getRepartitions())
+        );
+    }
+
+    @Test
+    void testConstructorWithInvalidParameters() {
+        assertThrows(IllegalArgumentException.class, () -> new ExchangeTradedFund(null, REPARTITION));
+        assertThrows(IllegalArgumentException.class, () -> new ExchangeTradedFund("Vanguard", null));
     }
 
     @Test
     void testValeur() {
         var etf = new ExchangeTradedFund("Vanguard", REPARTITION);
-        assertEquals(0, etf.valeur(new Jour(2026, 20)));
+        assertThrows(UnsupportedOperationException.class, () -> etf.valeur(new Jour(2026, 20)));
     }
 
     @Test
     void testValeurInvalidDay(){
         var etf = new ExchangeTradedFund("Vanguard", REPARTITION);
-        assertEquals(0, etf.valeur(null));
+        assertThrows(UnsupportedOperationException.class, () -> etf.valeur(null));
     }
 }

@@ -17,13 +17,21 @@ package fr.utc.miage.shares;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ExchangeTradedFund extends Action {
     Map<Company, Float> repartitions;
 
     public ExchangeTradedFund(String libelle) {
+        this(libelle, new HashMap<>());
+    }
+
+    public ExchangeTradedFund(String libelle, Map<Company, Float> repartitions) {
         super(libelle);
-        this.repartitions = new HashMap<>();
+        if(libelle == null || repartitions == null){
+            throw new IllegalArgumentException("Libelle and repartitions cannot be null");
+        }
+        this.repartitions = repartitions;
     }
 
     public Map<Company, Float> getRepartitions() {
@@ -31,13 +39,30 @@ public class ExchangeTradedFund extends Action {
     }
 
     public float getRepartitionForCompany(Company company) {
-        return repartitions.get(company);
+        if(company == null){
+            throw new IllegalArgumentException("Company cannot be null");
+        }
+        return repartitions.getOrDefault(company, 0.0f);
     }
 
-    
-    
     @Override
     public float valeur(final Jour j) {
         throw new UnsupportedOperationException("ETF does not implement the valeur method");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ExchangeTradedFund other)) {
+            return false;
+        }
+        return super.equals(obj) && Objects.equals(this.repartitions, other.repartitions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), repartitions);
     }
 }
