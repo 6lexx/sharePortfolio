@@ -17,17 +17,8 @@ package fr.utc.miage.shares;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
@@ -106,5 +97,18 @@ public class ExchangeTradedFundTest {
     @Test
     void testValeurWithoutKey() {
         assertEquals(DEFAULT_ACTION_VALUE, CORRECT_ETF.valeur(AUTRE_JOUR));
+    }
+
+    @Test
+    void testgetHistoryETFValeurValideParam() {
+        CORRECT_ETF.setMapCours(JOUR, VALEUR_COURS);
+        assertEquals(MAP_COURS, CORRECT_ETF.getHistoryETFValeur());
+    }
+
+     @Test
+     void testGetHistoryETFValeurUnmodifiable() {
+        CORRECT_ETF.setMapCours(JOUR, VALEUR_COURS);
+        Map<Jour, Float> history = CORRECT_ETF.getHistoryETFValeur();
+        assertThrows(UnsupportedOperationException.class, () -> history.put(AUTRE_JOUR, 10.0f));
     }
 }
