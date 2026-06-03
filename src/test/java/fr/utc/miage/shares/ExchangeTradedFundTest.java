@@ -17,13 +17,15 @@ package fr.utc.miage.shares;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 class ExchangeTradedFundTest {
 
+    private static final String VALID_LABEL = "Apple";
+    private static final String OTHER_LABEL = "Microsoft";
     private final Company COMPANY = new Company("Company");
     private final ExchangeTradedFund CORRECT_ETF = new ExchangeTradedFund("ETF");
 
@@ -78,6 +80,11 @@ class ExchangeTradedFundTest {
     }
 
     @Test
+    void TestgetRepartitionForCompanyNULL(){
+        assertThrows(IllegalArgumentException.class,() ->  CORRECT_ETF.getRepartitionForCompany(null));
+    }
+
+    @Test
     void testGetMapCours() {
         assertDoesNotThrow(CORRECT_ETF::getMapCours);
     }
@@ -98,4 +105,64 @@ class ExchangeTradedFundTest {
     void testValeurWithoutKey() {
         assertEquals(DEFAULT_ACTION_VALUE, CORRECT_ETF.valeur(AUTRE_JOUR));
     }
+
+    @Test
+    void testgetHistoryETFValeurValideParam() {
+        CORRECT_ETF.setMapCours(JOUR, VALEUR_COURS);
+        assertEquals(MAP_COURS, CORRECT_ETF.getHistoryETFValeur());
+    }
+
+     @Test
+     void testGetHistoryETFValeurUnmodifiable() {
+        CORRECT_ETF.setMapCours(JOUR, VALEUR_COURS);
+        Map<Jour, Float> history = CORRECT_ETF.getHistoryETFValeur();
+        assertThrows(UnsupportedOperationException.class, () -> history.put(AUTRE_JOUR, 10.0f));
+    }
+
+    @Test
+    void testEqualsWithSameLabel() {
+        var action1 = new ExchangeTradedFund(VALID_LABEL);
+        var action2 = new ExchangeTradedFund(VALID_LABEL);
+
+        assertEquals(action1, action2);
+    }
+
+    @Test
+    void testEqualsWithSameInstance() {
+        var action = new ExchangeTradedFund(VALID_LABEL);
+
+        assertEquals(action, action);
+    }
+
+    @Test
+    void testEqualsWithDifferentLabel() {
+        var action1 = new ExchangeTradedFund(VALID_LABEL);
+        var action2 = new ExchangeTradedFund(OTHER_LABEL);
+
+        assertNotEquals(action1, action2);
+    }
+
+    @Test
+    void testEqualsWithNull() {
+        var action = new ExchangeTradedFund(VALID_LABEL);
+
+        assertNotEquals(action, null);
+    }
+
+    @Test
+    void testEqualsWithDifferentClass() {
+        var action = new ExchangeTradedFund(VALID_LABEL);
+        var company = new Company(VALID_LABEL);
+
+        assertNotEquals(action, company);
+    }
+
+    @Test
+    void testHashCodeWithDifferentState() {
+        var action1 = new ExchangeTradedFund(VALID_LABEL);
+        var action2 = new ExchangeTradedFund(OTHER_LABEL);
+
+        assertNotEquals(action1.hashCode(), action2.hashCode());
+    }
+
 }

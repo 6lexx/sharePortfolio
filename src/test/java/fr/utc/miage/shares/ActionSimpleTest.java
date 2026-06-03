@@ -15,6 +15,8 @@
  */
 package fr.utc.miage.shares;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -26,6 +28,8 @@ public class ActionSimpleTest {
    private static final Jour VALID_DAY = new Jour(2026, 20);
    private static final Jour INVALID_DAY = null;
    private static final Company COMPANY = new Company(VALID_LABEL);
+   private static final Jour AUTRE_JOUR = new Jour(2000,1);
+
 
    @Test
     void testConstructorWithParameters() {
@@ -169,5 +173,28 @@ public class ActionSimpleTest {
     void testSaveDailyPriceInvalidDay() {
         var action = new ActionSimple(VALID_LABEL, COMPANY);
         assertThrows(IllegalArgumentException.class, () -> action.saveDailyPrice(INVALID_DAY, 150.0f));
+    }
+
+    @Test
+    void testGetMapCoursUnmodifiable() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        action.saveDailyPrice(VALID_DAY, 150.0f);
+        assertDoesNotThrow(() -> action.getMapCours());
+    }
+
+    @Test
+    void testgetHistoryActionSimpleValeurValideParam() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        action.saveDailyPrice(VALID_DAY, 150.0f);
+        assertEquals(action.getMapCours(), action.getHistoryActionSimpleValeur());
+    }
+
+
+     @Test
+     void testGetHistoryActionSimpleValeurUnmodifiable() {
+        var action = new ActionSimple(VALID_LABEL, COMPANY);
+        action.saveDailyPrice(VALID_DAY, 150.0f);
+        Map<Jour, Float> history = action.getHistoryActionSimpleValeur();
+        assertThrows(UnsupportedOperationException.class, () -> history.put(AUTRE_JOUR, 10.0f));
     }
 }

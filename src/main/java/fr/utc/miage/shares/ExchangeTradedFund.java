@@ -15,6 +15,7 @@
  */
 package fr.utc.miage.shares;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -85,4 +86,11 @@ public class ExchangeTradedFund extends Action {
     public int hashCode() {
         return Objects.hash(super.hashCode(), repartitions);
     }
+
+    
+    public Map<Jour, Float> getHistoryETFValeur() {
+        return Collections.unmodifiableMap(mapCours);
+    }
+
+    
 }
