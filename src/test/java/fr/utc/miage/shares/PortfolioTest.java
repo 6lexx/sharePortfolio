@@ -25,12 +25,16 @@ public class PortfolioTest {
     private static final int ACTUAL_QUANTITY = 1;
     private static final int ACTUAL_QUANTITY_EXCEEDING = 2;
     private static final String ACTUAL_ACTION_LIBELLE = "ACTION LIBELLE TEST";
+    private static final String ACTUAL_SECOND_ACTION_LIBELLE = "SECOND ACTION LIBELLE TEST";
+    private static final float ACTUAL_PRICE = 1.0f;
     private static final String ACTUAL_COMPAGNY_NAME = "Company Test";
 
 
 
     private Portfolio p;
     private Action a;
+    private Action a2;
+
     private Jour j;
 
     @BeforeEach
@@ -38,6 +42,8 @@ public class PortfolioTest {
         p = new Portfolio();
         Company c = new Company(ACTUAL_COMPAGNY_NAME);
         a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+        a2 = new ActionSimple(ACTUAL_SECOND_ACTION_LIBELLE, c);
+
         j = new Jour(2025, 1);
     }
 
@@ -126,8 +132,22 @@ public class PortfolioTest {
      */
     @Test
     void TestPortfolioIsEqualToAction() {
-        ((ActionSimple) a).saveDailyPrice(j, 1.0f);
+        ((ActionSimple) a).saveDailyPrice(j, ACTUAL_PRICE);
         p.buyAction(a, ACTUAL_QUANTITY);
-        Assertions.assertEquals(1f, p.seeValue(j));
+        Assertions.assertEquals(ACTUAL_PRICE, p.seeValue(j));
+    }
+
+    /**
+     * Vérifie que la valeur du portefeuille est bien égal à la somme de deux actions achetées
+     */
+    @Test
+    void TestPortfolioIsEqualToManyAction() {
+        ((ActionSimple) a).saveDailyPrice(j, ACTUAL_PRICE);
+        ((ActionSimple) a2).saveDailyPrice(j, ACTUAL_PRICE);
+
+        p.buyAction(a, ACTUAL_QUANTITY);
+        p.buyAction(a2, ACTUAL_QUANTITY);
+
+        Assertions.assertEquals(2 * ACTUAL_PRICE, p.seeValue(j));
     }
 }
