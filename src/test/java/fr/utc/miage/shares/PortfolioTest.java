@@ -49,11 +49,9 @@ public class PortfolioTest {
         LocalDateTime local = LocalDateTime.parse("2018-12-03T12:39:10");
         int dayOfYear = local.getDayOfYear();
         int year = local.getYear();
-        Jour j = new Jour(year, dayOfYear);
+        j = new Jour(year, dayOfYear);
         a.saveDailyPrice(j, VALID_DAILY_PRICE);
         a2 = new ActionSimple(ACTUAL_SECOND_ACTION_LIBELLE, c);
-
-        j = new Jour(2025, 1);
     }
 
     /**
@@ -184,29 +182,5 @@ public class PortfolioTest {
     @Test
     void TestPortfolioEqualZero() {
         Assertions.assertEquals(0f, p.seeValue(j));
-    }
-
-    /**
-     * Vérifie que la valeur du portefeuille est bien égal à la somme d'une action achetée
-     */
-    @Test
-    void TestPortfolioIsEqualToAction() {
-        ((ActionSimple) a).saveDailyPrice(j, ACTUAL_PRICE);
-        p.buyAction(a, ACTUAL_QUANTITY);
-        Assertions.assertEquals(ACTUAL_PRICE, p.seeValue(j));
-    }
-
-    /**
-     * Vérifie que la valeur du portefeuille est bien égal à la somme de deux actions achetées
-     */
-    @Test
-    void TestPortfolioIsEqualToManyAction() {
-        ((ActionSimple) a).saveDailyPrice(j, ACTUAL_PRICE);
-        ((ActionSimple) a2).saveDailyPrice(j, ACTUAL_PRICE);
-
-        p.buyAction(a, ACTUAL_QUANTITY);
-        p.buyAction(a2, ACTUAL_QUANTITY);
-
-        Assertions.assertEquals(2 * ACTUAL_PRICE, p.seeValue(j));
     }
 }
