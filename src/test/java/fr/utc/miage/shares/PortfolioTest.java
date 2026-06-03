@@ -176,6 +176,7 @@ public class PortfolioTest {
         Assertions.assertEquals(VALID_DAILY_PRICE, t.getPrice());
         Assertions.assertEquals(VALID_DAILY_PRICE * ACTUAL_QUANTITY, t.getTotal());
         Assertions.assertFalse(t.isBuy());
+    }
 
     /**
      * Vérifie que la valeur du portefeuille est bien égal à zéro si aucune action n'est achetée
