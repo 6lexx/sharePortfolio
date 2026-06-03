@@ -15,7 +15,10 @@
  */
 package fr.utc.miage.shares;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +26,11 @@ import java.util.Map;
  */
 public class Portfolio {
     private final Map<Action, Integer> lignes;
+    private final List<Transaction> transactions = new ArrayList<>();
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 
     /**
      * Construit un portefeuille vide
@@ -52,6 +60,13 @@ public class Portfolio {
         } else {
             this.lignes.put(action, quantity);
         }
+        LocalDateTime local = LocalDateTime.parse("2018-12-03T12:39:10");
+        int dayOfYear = local.getDayOfYear();
+        int year = local.getYear();
+
+        Jour today = new Jour(year, dayOfYear);
+
+        transactions.add(new Transaction(action, quantity, action.valeur(today), action.valeur(today) * quantity, today, true));
     }
 
     /**
@@ -65,11 +80,17 @@ public class Portfolio {
             if (quantity > this.lignes.get(action)) {
                 throw new IllegalArgumentException("Erreur - Il est impossible de vendre plus actions que vous n'en possèdez");
             }
-            if(this.lignes.get(action) - quantity == 0) {
+            if(this.lignes.get(action) - quantity <= 0) {
                 this.lignes.remove(action);
             } else {
                 this.lignes.put(action, this.lignes.get(action) - quantity);
             }
+            LocalDateTime local = LocalDateTime.parse("2018-12-03T12:39:10");
+            int dayOfYear = local.getDayOfYear();
+            int year = local.getYear();
+
+            Jour today = new Jour(year, dayOfYear);
+            transactions.add(new Transaction(action, quantity, action.valeur(today), action.valeur(today) * quantity, today, false));
         } else {
             throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
         }
