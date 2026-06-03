@@ -23,6 +23,11 @@ class ActionTest {
     private static final String FOO_SHARE2 = "Foo Share 2";
 
     @Test
+    void testConstructorWithNullLabelThrows() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ActionImpl(null));
+    }
+
+    @Test
     void testGetLibelleReturnConstructorParameter() {
         final Action action = new ActionImpl(FOO_SHARE1);
         final String result = action.getLibelle();
