@@ -25,18 +25,26 @@ public class PortfolioTest {
     private static final int ACTUAL_QUANTITY = 1;
     private static final int ACTUAL_QUANTITY_EXCEEDING = 2;
     private static final String ACTUAL_ACTION_LIBELLE = "ACTION LIBELLE TEST";
+    private static final String ACTUAL_SECOND_ACTION_LIBELLE = "SECOND ACTION LIBELLE TEST";
+    private static final float ACTUAL_PRICE = 1.0f;
     private static final String ACTUAL_COMPAGNY_NAME = "Company Test";
+
 
 
     private Portfolio p;
     private Action a;
+    private Action a2;
 
+    private Jour j;
 
     @BeforeEach
     void setUp() {
         p = new Portfolio();
         Company c = new Company(ACTUAL_COMPAGNY_NAME);
         a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+        a2 = new ActionSimple(ACTUAL_SECOND_ACTION_LIBELLE, c);
+
+        j = new Jour(2025, 1);
     }
 
     /**
@@ -109,5 +117,37 @@ public class PortfolioTest {
         p.buyAction(a, ACTUAL_QUANTITY);
         Assertions.assertDoesNotThrow(() -> p.sellAction(a, ACTUAL_QUANTITY));
         Assertions.assertNull(p.getLignes().get(a));
+    }
+
+    /**
+     * Vérifie que la valeur du portefeuille est bien égal à zéro si aucune action n'est achetée
+     */
+    @Test
+    void TestPortfolioEqualZero() {
+        Assertions.assertEquals(0f, p.seeValue(j));
+    }
+
+    /**
+     * Vérifie que la valeur du portefeuille est bien égal à la somme d'une action achetée
+     */
+    @Test
+    void TestPortfolioIsEqualToAction() {
+        ((ActionSimple) a).saveDailyPrice(j, ACTUAL_PRICE);
+        p.buyAction(a, ACTUAL_QUANTITY);
+        Assertions.assertEquals(ACTUAL_PRICE, p.seeValue(j));
+    }
+
+    /**
+     * Vérifie que la valeur du portefeuille est bien égal à la somme de deux actions achetées
+     */
+    @Test
+    void TestPortfolioIsEqualToManyAction() {
+        ((ActionSimple) a).saveDailyPrice(j, ACTUAL_PRICE);
+        ((ActionSimple) a2).saveDailyPrice(j, ACTUAL_PRICE);
+
+        p.buyAction(a, ACTUAL_QUANTITY);
+        p.buyAction(a2, ACTUAL_QUANTITY);
+
+        Assertions.assertEquals(2 * ACTUAL_PRICE, p.seeValue(j));
     }
 }
