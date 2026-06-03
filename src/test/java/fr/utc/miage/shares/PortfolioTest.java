@@ -28,15 +28,17 @@ public class PortfolioTest {
     private static final String ACTUAL_COMPAGNY_NAME = "Company Test";
 
 
+
     private Portfolio p;
     private Action a;
-
+    private Jour j;
 
     @BeforeEach
     void setUp() {
         p = new Portfolio();
         Company c = new Company(ACTUAL_COMPAGNY_NAME);
         a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
+        j = new Jour(2025, 1);
     }
 
     /**
@@ -109,5 +111,13 @@ public class PortfolioTest {
         p.buyAction(a, ACTUAL_QUANTITY);
         Assertions.assertDoesNotThrow(() -> p.sellAction(a, ACTUAL_QUANTITY));
         Assertions.assertNull(p.getLignes().get(a));
+    }
+
+    /**
+     * Vérifie que le portefeuille est bien égal à zéro si aucune action n'est achetée
+     */
+    @Test
+    void TestPortfolioEqualZero() {
+        Assertions.assertEquals(0f, p.seeValue(j));
     }
 }
