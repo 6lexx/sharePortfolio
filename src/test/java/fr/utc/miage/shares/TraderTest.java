@@ -15,16 +15,12 @@
  */
 
 package fr.utc.miage.shares;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
-
-import static fr.utc.miage.shares.Trader.createTrader;
 
 class TraderTest {
     private final String NOM = "Doe";
@@ -33,9 +29,10 @@ class TraderTest {
     private final String NOM_POUR_EQUALS = "Dupont";
     private final String PRENOM_POUR_EQUALS  = "Jean";
     private final String EMAIL_POUR_EQUALS  = "jean.dupont@mail.com";
-    private final Company VALID_COMPANY = new Company("Apple");
+    private final Portfolio VALID_PORTFOLIO = new Portfolio();
+    private final Portfolio INVALID_PORTFOLIO = null;
 
-    private final Trader trader =  new Trader(NOM,PRENOM,EMAIL);
+    private final Trader trader =  new Trader(NOM,PRENOM,EMAIL, VALID_PORTFOLIO);
 
     @Test
     void getNom() {
@@ -72,33 +69,32 @@ class TraderTest {
 
     @Test
     void createTraderWithParameterSuccessful() {
-        assertDoesNotThrow(()->createTrader(NOM,PRENOM,EMAIL));
+        assertDoesNotThrow(()-> new Trader(NOM,PRENOM,EMAIL, VALID_PORTFOLIO));
     }
 
     @Test
     void createTraderWithNoNameThrowsException() {
-        assertThrows(IllegalArgumentException.class, ()->createTrader(null,PRENOM,EMAIL));
+        assertThrows(IllegalArgumentException.class, ()-> new Trader(null,PRENOM,EMAIL, VALID_PORTFOLIO));
+    }
+
+    @Test
+    void createTraderWithNoPortfolioThrowsException() {
+        assertThrows(IllegalArgumentException.class, ()-> new Trader(NOM,PRENOM,EMAIL, null));
     }
 
     @Test
     void createTraderWithNoEmailThrowsException() {
-        assertThrows(IllegalArgumentException.class, ()->createTrader(NOM,null,EMAIL));
+        assertThrows(IllegalArgumentException.class, ()->new Trader(NOM,null,EMAIL, VALID_PORTFOLIO));
     }
 
     @Test
     void createTraderWithNoPrenomThrowsException() {
-        assertThrows(IllegalArgumentException.class, ()->createTrader(NOM,PRENOM,null));
+        assertThrows(IllegalArgumentException.class, ()->new Trader(NOM,PRENOM,null, INVALID_PORTFOLIO));
     }
 
     @Test
     void testHashCode() {
         assertDoesNotThrow(trader::hashCode);
-    }
-
-    @Test
-    void testHashCodeWithNull(){
-        final Trader trader1 = new Trader(null,null,null);
-        assertDoesNotThrow(trader1::hashCode);
     }
 
     @Test
@@ -118,30 +114,40 @@ class TraderTest {
 
     @Test
     void testEqualsWithDifferentNameFalse() {
-        final Trader other = new Trader(NOM_POUR_EQUALS ,PRENOM,EMAIL);
+        final Trader other = new Trader(NOM_POUR_EQUALS ,PRENOM,EMAIL, VALID_PORTFOLIO);
         assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithDifferentFirstnameFalse() {
-        final Trader other = new Trader(NOM,PRENOM_POUR_EQUALS ,EMAIL);
+        final Trader other = new Trader(NOM,PRENOM_POUR_EQUALS ,EMAIL, VALID_PORTFOLIO);
         assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithDifferentEmailFalse() {
-        final Trader other = new Trader(NOM,PRENOM,EMAIL_POUR_EQUALS );
+        final Trader other = new Trader(NOM,PRENOM,EMAIL_POUR_EQUALS, VALID_PORTFOLIO);
         assertNotEquals(trader, other);
     }
 
     @Test
     void testEqualsWithSameValuesTrue() {
-        final Trader other = new Trader(NOM,PRENOM,EMAIL);
+        final Trader other = new Trader(NOM,PRENOM,EMAIL, VALID_PORTFOLIO);
         assertEquals(trader, other);
     }
 
     @Test
     void testToString() {
         assertDoesNotThrow(trader::toString);
+    }
+
+    @Test
+    void testGetPortfolio() {
+        assertDoesNotThrow(trader::getPortfolio);
+    }
+
+    @Test
+    void testGetPortfolioReturnsCorrectValue() {
+        assertEquals(VALID_PORTFOLIO, trader.getPortfolio());
     }
 }

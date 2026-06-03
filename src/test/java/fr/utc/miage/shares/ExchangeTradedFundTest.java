@@ -20,9 +20,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class ExchangeTradedFundTest {
+
+class ExchangeTradedFundTest {
 
     private static final String VALID_LABEL = "Apple";
     private static final String OTHER_LABEL = "Microsoft";
