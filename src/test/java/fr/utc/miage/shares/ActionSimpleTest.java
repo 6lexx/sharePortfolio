@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
-public class ActionSimpleTest {
+class ActionSimpleTest {
    private static final String VALID_LABEL = "Apple";
    private static final Jour VALID_DAY = new Jour(2026, 20);
    private static final Jour INVALID_DAY = null;
@@ -85,7 +85,7 @@ public class ActionSimpleTest {
     void testEqualsWithNull() {
         var action = new ActionSimple(VALID_LABEL, COMPANY);
 
-        assertNotEquals(action, null);
+        assertNotEquals(null,action);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class ActionSimpleTest {
     void testGetMapCoursUnmodifiable() {
         var action = new ActionSimple(VALID_LABEL, COMPANY);
         action.saveDailyPrice(VALID_DAY, 150.0f);
-        assertDoesNotThrow(() -> action.getMapCours());
+        assertDoesNotThrow(action::getMapCours);
     }
 
     @Test

@@ -148,7 +148,7 @@ class ExchangeTradedFundTest {
     void testEqualsWithNull() {
         var action = new ExchangeTradedFund(VALID_LABEL);
 
-        assertNotEquals(action, null);
+        assertNotEquals(null,action);
     }
 
     @Test
