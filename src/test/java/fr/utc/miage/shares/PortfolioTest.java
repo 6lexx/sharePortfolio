@@ -22,36 +22,32 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PortfolioTest {
+class PortfolioTest {
     private static final int ACTUAL_QUANTITY_NULL = 0;
     private static final int ACTUAL_QUANTITY = 1;
     private static final int ACTUAL_QUANTITY_10 = 10;
     private static final float VALID_DAILY_PRICE = 12.3f;
     private static final int ACTUAL_QUANTITY_EXCEEDING = 2;
     private static final String ACTUAL_ACTION_LIBELLE = "ACTION LIBELLE TEST";
-    private static final String ACTUAL_SECOND_ACTION_LIBELLE = "SECOND ACTION LIBELLE TEST";
-    private static final float ACTUAL_PRICE = 1.0f;
-    private static final String ACTUAL_COMPAGNY_NAME = "Company Test";
+    private static final String ACTUAL_COMPANY_NAME = "Company Test";
 
 
 
     private Portfolio p;
     private ActionSimple a;
-    private ActionSimple a2;
 
     private Jour j;
 
     @BeforeEach
     void setUp() {
         p = new Portfolio();
-        Company c = new Company(ACTUAL_COMPAGNY_NAME);
+        Company c = new Company(ACTUAL_COMPANY_NAME);
         a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
         LocalDateTime local = LocalDateTime.parse("2018-12-03T12:39:10");
         int dayOfYear = local.getDayOfYear();
         int year = local.getYear();
         j = new Jour(year, dayOfYear);
         a.saveDailyPrice(j, VALID_DAILY_PRICE);
-        a2 = new ActionSimple(ACTUAL_SECOND_ACTION_LIBELLE, c);
     }
 
     /**
@@ -70,7 +66,7 @@ public class PortfolioTest {
     void TestBuySimpleActionWithActionsAlreadyInPortfolio(){
         p.buyAction(a, ACTUAL_QUANTITY);
         Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
-        Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY * 2);
+        Assertions.assertEquals(ACTUAL_QUANTITY * 2,p.getLignes().get(a));
     }
 
     /**
