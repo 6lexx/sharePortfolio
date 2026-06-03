@@ -114,10 +114,20 @@ public class PortfolioTest {
     }
 
     /**
-     * Vérifie que le portefeuille est bien égal à zéro si aucune action n'est achetée
+     * Vérifie que la valeur du portefeuille est bien égal à zéro si aucune action n'est achetée
      */
     @Test
     void TestPortfolioEqualZero() {
         Assertions.assertEquals(0f, p.seeValue(j));
+    }
+
+    /**
+     * Vérifie que la valeur du portefeuille est bien égal à la somme d'une action achetée
+     */
+    @Test
+    void TestPortfolioIsEqualToAction() {
+        ((ActionSimple) a).saveDailyPrice(j, 1.0f);
+        p.buyAction(a, ACTUAL_QUANTITY);
+        Assertions.assertEquals(1f, p.seeValue(j));
     }
 }
