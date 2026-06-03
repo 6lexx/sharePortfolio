@@ -23,14 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 class TraderTest {
-    private final String NOM = "Doe";
-    private final String PRENOM = "John";
-    private final String EMAIL = "john.doe@mail.com";
-    private final String NOM_POUR_EQUALS = "Dupont";
-    private final String PRENOM_POUR_EQUALS  = "Jean";
-    private final String EMAIL_POUR_EQUALS  = "jean.dupont@mail.com";
-    private final Portfolio VALID_PORTFOLIO = new Portfolio();
-    private final Portfolio INVALID_PORTFOLIO = null;
+    private static final String NOM = "Doe";
+    private static final String PRENOM = "John";
+    private static final String EMAIL = "john.doe@mail.com";
+    private static final String NOM_POUR_EQUALS = "Dupont";
+    private static final String PRENOM_POUR_EQUALS  = "Jean";
+    private static final String EMAIL_POUR_EQUALS  = "jean.dupont@mail.com";
+    private static final Portfolio VALID_PORTFOLIO = new Portfolio();
+    private static final Portfolio INVALID_PORTFOLIO = null;
 
     private final Trader trader =  new Trader(NOM,PRENOM,EMAIL, VALID_PORTFOLIO);
 
@@ -104,12 +104,12 @@ class TraderTest {
 
     @Test
     void testEqualsWithNullFalse() {
-        assertNotEquals(trader, null);
+        assertNotEquals(null, trader);
     }
 
     @Test
     void testEqualsWithDifferentObjectAndDifferentClassFalse() {
-        assertNotEquals(trader, NOM);
+        assertNotEquals(NOM, trader);
     }
 
     @Test
