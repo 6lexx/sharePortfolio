@@ -17,28 +17,30 @@ package fr.utc.miage.shares;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class ExchangeTradedFundTest {
 
     private static final String VALID_LABEL = "Apple";
     private static final String OTHER_LABEL = "Microsoft";
-    private final Company COMPANY = new Company("Company");
-    private final ExchangeTradedFund CORRECT_ETF = new ExchangeTradedFund("ETF");
+    private static final Company COMPANY = new Company("Company");
+    private static final ExchangeTradedFund CORRECT_ETF = new ExchangeTradedFund("ETF");
 
-    private final Float VALEUR_REPARTITION = 0.5f;
-    private final Float VALEUR_REPARTITION_FALSE = -0.5f;
-    private final Float VALEUR_REPARTITION_SUPERIOR = 1.5f;
-    private final Map<Company, Float> REPARTITION = Map.of(COMPANY, VALEUR_REPARTITION);
+    private static final Float VALEUR_REPARTITION = 0.5f;
+    private static final Float VALEUR_REPARTITION_FALSE = -0.5f;
+    private static final Float VALEUR_REPARTITION_SUPERIOR = 1.5f;
+    private static final Map<Company, Float> REPARTITION = Map.of(COMPANY, VALEUR_REPARTITION);
 
-    private final Jour JOUR = new Jour(2012,1);
-    private final Jour AUTRE_JOUR = new Jour(2000,1);
-    private final Float VALEUR_COURS = 12.45f;
-    private final Map<Jour,Float> MAP_COURS = Map.of(JOUR,VALEUR_COURS);
-    private final Float DEFAULT_ACTION_VALUE = 0f ;
+    private static final Jour JOUR = new Jour(2012,1);
+    private static final Jour AUTRE_JOUR = new Jour(2000,1);
+    private static final Float VALEUR_COURS = 12.45f;
+    private static final Map<Jour,Float> MAP_COURS = Map.of(JOUR,VALEUR_COURS);
+    private static final Float DEFAULT_ACTION_VALUE = 0f ;
 
     @Test
     void TestgetRepartitionsWithValideParam(){
