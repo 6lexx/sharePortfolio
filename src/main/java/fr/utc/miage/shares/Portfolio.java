@@ -48,7 +48,6 @@ public class Portfolio {
         return lignes;
     }
 
-
     /**
      * Permet d'acheter une/plusieurs action(s) en l'ajoutant à son portefeuille
      */
@@ -95,5 +94,19 @@ public class Portfolio {
         } else {
             throw new IllegalArgumentException("Erreur - Il n'existe pas d'action à ce nom");
         }
+    }
+
+    /**
+     * Calcule la valeur totale du portefeuille pour un jour donné.
+     *
+     * @param j le jour pour lequel calculer la valeur
+     * @return la valeur totale du portefeuille
+     */
+    public float seeValue(Jour j){
+        float total = 0;
+        for (Map.Entry<Action, Integer> ligne : this.lignes.entrySet()) {
+            total += ligne.getKey().valeur(j) * ligne.getValue();
+        }
+        return total;
     }
 }
