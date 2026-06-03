@@ -75,7 +75,7 @@ public class ExchangeTradedFund extends Action {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof ExchangeTradedFund other)) {
+        if (!(obj instanceof ExchangeTradedFund)) {
             return false;
         }
         return super.equals(obj);
