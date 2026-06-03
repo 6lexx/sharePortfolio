@@ -44,9 +44,8 @@ public class ExchangeTradedFund extends Action {
         return repartitions;
     }
     
-
     public void setRepartitions(Map<Company, Float> repartitions) {
-        this.repartitions = repartitions;
+        this.repartitions = new HashMap<>(repartitions);
     }
 
     public void setRepartitionsForCompany(Company company, Float repartition) {
