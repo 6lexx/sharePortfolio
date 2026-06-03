@@ -16,7 +16,9 @@
 package fr.utc.miage.shares;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 class TransactionTest {
@@ -58,11 +60,11 @@ class TransactionTest {
     @Test
     void testGettersWithValidTransactionReturnsCorrectValues() {
         Transaction transaction = new Transaction(VALID_ACTION, VALID_QUANTITY, VALID_PRICE, VALID_TOTAL, VALID_JOUR, true);
-        assert(transaction.getAction().equals(VALID_ACTION));
-        assert(transaction.getQuantity().equals(VALID_QUANTITY));
-        assert(transaction.getPrice() == VALID_PRICE);
-        assert(transaction.getTotal() == VALID_TOTAL);
-        assert(transaction.getJour().equals(VALID_JOUR));
-        assert(transaction.isBuy() == true); 
+        assertEquals(VALID_ACTION, transaction.getAction());
+        assertEquals(VALID_QUANTITY, transaction.getQuantity());
+        assertEquals(VALID_PRICE, transaction.getPrice());
+        assertEquals(VALID_TOTAL, transaction.getTotal());
+        assertEquals(VALID_JOUR, transaction.getJour());
+        assertTrue(transaction.isBuy());
     }
 }
