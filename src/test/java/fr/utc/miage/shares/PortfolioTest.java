@@ -56,7 +56,7 @@ class PortfolioTest {
     @Test
     void TestBuyActionFromEmptyPortfolio(){
         Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
-        Assertions.assertEquals(p.getLignes().get(a), ACTUAL_QUANTITY);
+        Assertions.assertEquals(ACTUAL_QUANTITY, p.getLignes().get(a));
     }
 
     /**
@@ -66,7 +66,7 @@ class PortfolioTest {
     void TestBuySimpleActionWithActionsAlreadyInPortfolio(){
         p.buyAction(a, ACTUAL_QUANTITY);
         Assertions.assertDoesNotThrow(() -> p.buyAction(a, ACTUAL_QUANTITY));
-        Assertions.assertEquals(ACTUAL_QUANTITY * 2,p.getLignes().get(a));
+        Assertions.assertEquals(ACTUAL_QUANTITY * 2, p.getLignes().get(a));
     }
 
     /**
