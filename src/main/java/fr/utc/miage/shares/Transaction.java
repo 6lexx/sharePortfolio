@@ -23,23 +23,21 @@ public class Transaction {
     private final Integer quantity;
     private final double price;
     private final double total;
-    private final Trader trader;
     private final Jour jour;
     private final boolean isBuy;
 
-    public Transaction(Action action, Integer quantity, double price, double total, Trader trader, Jour jour,
+    public Transaction(Action action, Integer quantity, double price, double total, Jour jour,
             boolean isBuy) {
         if (action == null) throw new IllegalArgumentException("Action cannot be null");
         if (quantity == null || quantity <= 0) throw new IllegalArgumentException("Quantity must be a positive integer");
         if (price <= 0) throw new IllegalArgumentException("Price must be a positive number");
         if (total <= 0) throw new IllegalArgumentException("Total must be a positive number");
-        if (trader == null) throw new IllegalArgumentException("Trader cannot be null");
         if (jour == null) throw new IllegalArgumentException("Jour cannot be null");
+
         this.action = action;
         this.quantity = quantity;
         this.price = price;
         this.total = total;
-        this.trader = trader;
         this.jour = jour;
         this.isBuy = isBuy;
     }
@@ -54,9 +52,6 @@ public class Transaction {
     }
     public double getTotal() {
         return total;
-    }
-    public Trader getTrader() {
-        return trader;
     }
     public Jour getJour() {
         return jour;

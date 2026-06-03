@@ -21,11 +21,17 @@ public class Trader {
     private String nom; 
     private String prenom;
     private String email;
+    private final Portfolio portfolio;
 
-    public Trader(String nom, String prenom, String email) {
+    public Trader(String nom, String prenom, String email, Portfolio portfolio) {
+        if (nom == null) throw new IllegalArgumentException("Nom cannot be null");
+        if (prenom == null) throw new IllegalArgumentException("Prenom cannot be null");
+        if (email == null) throw new IllegalArgumentException("Email cannot be null");
+        if (portfolio == null) throw new IllegalArgumentException("Portfolio cannot be null");
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+        this.portfolio = portfolio;
     }
     
     public String getNom() {
@@ -52,20 +58,13 @@ public class Trader {
         this.email = email;
     }
 
-    public static Trader createTrader(String nom, String prenom, String email) {
-        if (nom == null || prenom == null || email == null) {
-            throw new IllegalArgumentException("All parameters must be non-null");
-        }
-        return new Trader(nom, prenom, email);
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((nom == null) ? 0 : nom.hashCode());
-        result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + nom.hashCode();
+        result = prime * result + prenom.hashCode();
+        result = prime * result + email.hashCode();
         return result;
     }
 
@@ -84,6 +83,12 @@ public class Trader {
     @Override
     public String toString() {
         return "Trader [nom=" + nom + ", prenom=" + prenom + ", email=" + email + "]";
+    }
+
+
+
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
 
