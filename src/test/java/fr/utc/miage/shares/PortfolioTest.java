@@ -109,6 +109,16 @@ public class PortfolioTest {
     }
 
     /**
+     * Vérifie que la quantité est correctement réduite lors d'une vente partielle.
+     */
+    @Test
+    void testSellActionReducesQuantityWhenPartialSell() {
+        p.buyAction(a, ACTUAL_QUANTITY_EXCEEDING);
+        p.sellAction(a, ACTUAL_QUANTITY);
+        Assertions.assertEquals(ACTUAL_QUANTITY, p.getLignes().get(a));
+    }
+
+    /**
      * Vérifie que l'action est correctement supprimée du Portfolio lorsqu'une
      * vente d'actions réduit la quantité d'actions à 0.
      */
