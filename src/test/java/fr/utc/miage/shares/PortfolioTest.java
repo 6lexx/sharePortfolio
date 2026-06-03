@@ -34,6 +34,7 @@ class PortfolioTest {
 
 
     private Portfolio p;
+    private Portfolio p1;
     private ActionSimple a;
 
     private Jour j;
@@ -41,6 +42,7 @@ class PortfolioTest {
     @BeforeEach
     void setUp() {
         p = new Portfolio();
+        p1 = new Portfolio();
         Company c = new Company(ACTUAL_COMPANY_NAME);
         a = new ActionSimple(ACTUAL_ACTION_LIBELLE, c);
         LocalDateTime local = LocalDateTime.parse("2018-12-03T12:39:10");
@@ -178,5 +180,13 @@ class PortfolioTest {
     @Test
     void TestPortfolioEqualZero() {
         Assertions.assertEquals(0f, p.seeValue(j));
+    }
+    /**
+     * Vérifie que la valeur du portefeuille est bien égal à zéro si aucune action n'est achetée
+     */
+    @Test
+    void TestPortfolioEqualRealValue() {
+        p1.buyAction(a, ACTUAL_QUANTITY);
+        Assertions.assertEquals(ACTUAL_QUANTITY*VALID_DAILY_PRICE, p1.seeValue(j));
     }
 }

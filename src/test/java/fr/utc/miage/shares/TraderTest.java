@@ -130,6 +130,16 @@ class TraderTest {
         assertNotEquals(trader, other);
     }
 
+    @Test 
+    void testEqualsWithNullPortfolioFalse() {
+        assertNotEquals(null, trader);
+    }
+    @Test
+    void testEqualsWithDifferentClassesFalse() {
+        final String other = "N'importe quelle chaîne de caractères";
+        assertNotEquals(trader, other);
+    }
+
     @Test
     void testEqualsWithSameValuesTrue() {
         final Trader other = new Trader(NOM,PRENOM,EMAIL, VALID_PORTFOLIO);
